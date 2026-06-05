@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Creadores del Proyecto</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap');
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: 'Fredoka', sans-serif;
+      background-color: #fffdf5;
+      padding: 40px 20px;
+      color: #334155;
+    }
+
+    .container { max-width: 900px; margin: 0 auto; text-align: center; }
+
+    h1 { color: #f87171; font-size: clamp(2rem, 8vw, 3rem); margin-bottom: 40px; }
+
+   
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      margin-top: 20px;
+    }
+
+    .member-card {
+      background: white;
+      padding: 30px;
+      border-radius: 30px;
+      border: 4px solid #334155;
+      box-shadow: 6px 6px 0px #334155;
+      transition: transform 0.3s;
+    }
+
+    .member-card:hover { transform: translateY(-10px) rotate(-2deg); }
+
+    .avatar { 
+      font-size: 3rem; 
+      background: #f1f5f9; 
+      width: 90px; height: 90px; 
+      border-radius: 50%; 
+      margin: 0 auto 15px;
+      display: flex; align-items: center; justify-content: center;
+      border: 3px solid #334155;
+    }
+
+    .name { font-size: 1.25rem; font-weight: 700; color: #1e293b; margin-bottom: 5px; }
+    .role { font-size: 1rem; color: #64748b; }
+
+    .back-button {
+      display: inline-block;
+      margin-top: 50px;
+      padding: 12px 30px;
+      background: #334155;
+      color: white;
+      text-decoration: none;
+      border-radius: 50px;
+      font-weight: 700;
+      transition: background 0.2s;
+    }
+
+    .back-button:hover { background: #475569; }
+  </style>
+</head>
+<link rel="icon" type="img/png" href="img/favicon.png">
+<body>
+
+  <main class="container">
+    <h1>🌟 Equipo de Aventureros</h1> 
+    <p>¡Este proyecto fue posible gracias a este increíble equipo!</p>
+
+    <div class="team-grid">
+      <div class="member-card">
+        <div class="avatar">👨‍💻</div>
+        <div class="name">Hebert Juárez Islas</div>
+        <div class="role">Programador Creativo</div>
+      </div>
+
+      <div class="member-card">
+        <div class="avatar">🎨</div>
+        <div class="name">Erick Daniel Chavez Cabañas</div>
+        <div class="role">Diseñador Visual</div>
+      </div>
+
+      <div class="member-card">
+        <div class="avatar">🧠</div>
+        <div class="name">Ruben Edain Ramirez Vargas</div>
+        <div class="role">Gestor de Contenido</div>
+      </div>
+
+      <div class="member-card">
+        <div class="avatar">🧠</div>
+        <div class="name">Yahel Javier Ramirez Martinez</div>
+        <div class="role">Gestor de Contenido</div>
+      </div>
+    </div>
+
+    <a href="index.html" class="back-button">← Volver al inicio</a>
+  </main>
+
+</body>
+</html>

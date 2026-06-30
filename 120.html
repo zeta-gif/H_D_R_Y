@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Misiones Educativas Primaria</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@500;700&display=swap');
+
+    :root {
+      --bg-main: #f4f6fa;
+      --bg-card: #ffffff;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --border-color: #e2e8f0;
+      
+      /* Colores por campo formativo */
+      --color-lenguajes: #ec4899;
+      --color-saberes: #3b82f6;
+      --color-etica: #10b981;
+      --color-humano: #8b5cf6;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body { 
+      font-family: 'Quicksand', sans-serif; 
+      background: linear-gradient(45deg, #fbc2eb 0%, #a6c1ee 50%, #b18bfb 100%);
+      background-size: 200% 200%;
+      background-attachment: fixed;
+      animation: movimientoFondo 12s ease infinite alternate;
+      color: var(--text-main); 
+      padding: 60px 20px 80px 20px;
+      min-height: 100vh;
+    }
+
+    @keyframes movimientoFondo {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 100% 50%; }
+    }
+
+    .main-header {
+      text-align: center;
+      margin-bottom: 50px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .main-title {
+      font-family: 'Fredoka', sans-serif;
+      font-size: clamp(2.2rem, 6vw, 3.5rem);
+      color: #fff;
+      text-shadow: -3px -3px 0 #3f51b5, 3px -3px 0 #3f51b5, -3px 4px 0 #3f51b5, 3px 4px 0 #3f51b5,
+                   0px 8px 0px #ffeb3b, 0px 12px 20px rgba(0,0,0,0.2);
+      margin-bottom: 15px;
+      animation: flotarTitulo 4s ease-in-out infinite;
+    }
+
+    @keyframes flotarTitulo {
+      0%, 100% { transform: translateY(0) rotate(-0.5deg); }
+      50% { transform: translateY(-6px) rotate(0.5deg); }
+    }
+
+    .main-subtitle {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #ffffff;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .tabs-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    .tab-radio {
+      display: none;
+    }
+
+    .tabs-nav {
+      display: table;
+      width: 100%;
+      table-layout: fixed;
+      margin-bottom: 35px;
+      background: rgba(226, 232, 240, 0.9);
+      padding: 6px;
+      border-radius: 25px;
+      border: 4px solid #fff;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+
+    .tab-label {
+      display: table-cell;
+      text-align: center;
+      padding: 16px 10px;
+      cursor: pointer;
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: #475569;
+      border-radius: 18px;
+      transition: all 0.2s ease;
+    }
+
+    .tab-label:hover {
+      background: rgba(255, 255, 255, 0.5);
+      color: #1e293b;
+    }
+
+    #tab1:checked ~ .tabs-nav label[for="tab1"],
+    #tab2:checked ~ .tabs-nav label[for="tab2"],
+    #tab3:checked ~ .tabs-nav label[for="tab3"],
+    #tab4:checked ~ .tabs-nav label[for="tab4"],
+    #tab5:checked ~ .tabs-nav label[for="tab5"],
+    #tab6:checked ~ .tabs-nav label[for="tab6"] {
+      background: var(--bg-card);
+      color: #2563eb;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .grade-content {
+      display: none;
+      animation: fadeIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    #tab1:checked ~ #content1,
+    #tab2:checked ~ #content2,
+    #tab3:checked ~ #content3,
+    #tab4:checked ~ #content4,
+    #tab5:checked ~ #content5,
+    #tab6:checked ~ #content6 {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .dashboard-row {
+      display: table;
+      width: 100%;
+      table-layout: fixed;
+      margin-bottom: 30px;
+    }
+
+    .dashboard-col {
+      display: table-cell;
+      width: 50%;
+      padding: 0 15px;
+      vertical-align: top;
+    }
+
+    @media (max-width: 950px) {
+      .dashboard-row, .dashboard-col {
+        display: block;
+        width: 100%;
+        padding: 0;
+      }
+      .dashboard-col {
+        margin-bottom: 30px;
+      }
+      .tabs-nav {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 5px;
+        border-radius: 20px;
+      }
+      .tab-label {
+        display: block;
+        padding: 12px 5px;
+        font-size: 0.95rem;
+        border-radius: 12px;
+      }
+    }
+
+    .field-card {
+      background: rgba(255, 255, 255, 0.96);
+      border-radius: 40px;
+      padding: 30px 25px;
+      border: 6px solid #fff;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      height: 100%;
+    }
+
+   
+    .field-card.lenguajes { box-shadow: 0 12px 0px var(--color-lenguajes), 0 15px 25px rgba(0,0,0,0.1); }
+    .field-card.saberes { box-shadow: 0 12px 0px var(--color-saberes), 0 15px 25px rgba(0,0,0,0.1); }
+    .field-card.etica { box-shadow: 0 12px 0px var(--color-etica), 0 15px 25px rgba(0,0,0,0.1); }
+    .field-card.humano { box-shadow: 0 12px 0px var(--color-humano), 0 15px 25px rgba(0,0,0,0.1); }
+
+    .field-card:hover {
+      transform: translateY(-8px);
+    }
+    .field-card.lenguajes:hover { box-shadow: 0 18px 0px var(--color-lenguajes), 0 22px 30px rgba(0,0,0,0.15); }
+    .field-card.saberes:hover { box-shadow: 0 18px 0px var(--color-saberes), 0 22px 30px rgba(0,0,0,0.15); }
+    .field-card.etica:hover { box-shadow: 0 18px 0px var(--color-etica), 0 22px 30px rgba(0,0,0,0.15); }
+    .field-card.humano:hover { box-shadow: 0 18px 0px var(--color-humano), 0 22px 30px rgba(0,0,0,0.15); }
+
+    .field-header {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 3px dashed var(--border-color);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Iconos e indicadores flotantes dentro del título de la tarjeta */
+    .field-header .icon-floating {
+      font-size: 1.8rem;
+      display: inline-block;
+      animation: flotarIcono 3.5s ease-in-out infinite;
+    }
+
+    @keyframes flotarIcono {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-5px) scale(1.08); }
+    }
+
+    .lenguajes .field-header { color: var(--color-lenguajes); border-bottom-color: #fbcfe8; }
+    .saberes .field-header { color: var(--color-saberes); border-bottom-color: #bfdbfe; }
+    .etica .field-header { color: var(--color-etica); border-bottom-color: #a7f3d0; }
+    .humano .field-header { color: var(--color-humano); border-bottom-color: #ddd6fe; }
+
+    .tool-item {
+      display: table;
+      width: 100%;
+      background: #f8fafc;
+      border: 2px solid #f1f5f9;
+      border-radius: 16px;
+      padding: 12px 15px;
+      margin-bottom: 10px;
+      transition: all 0.2s ease;
+    }
+
+    .tool-item:hover {
+      background: #ffffff;
+      border-color: #cbd5e1;
+      transform: translateX(4px);
+    }
+
+    .tool-cell-info {
+      display: table-cell;
+      vertical-align: middle;
+    }
+
+    .tool-cell-btn {
+      display: table-cell;
+      vertical-align: middle;
+      text-align: right;
+      width: 100px;
+    }
+
+    .tool-number {
+      display: inline-block;
+      font-size: 0.85rem;
+      font-weight: 700;
+      background: #e2e8f0;
+      color: var(--text-muted);
+      width: 24px;
+      height: 24px;
+      text-align: center;
+      line-height: 24px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+
+    .tool-name {
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--text-main);
+    }
+
+    .btn-action {
+      display: inline-block;
+      padding: 8px 18px;
+      text-decoration: none;
+      border-radius: 20px;
+      color: white;
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      border: 2px solid #fff;
+      transition: all 0.2s ease;
+    }
+
+    .lenguajes .btn-action { background-color: var(--color-lenguajes); box-shadow: 0 4px 0 #be185d; }
+    .saberes .btn-action { background-color: var(--color-saberes); box-shadow: 0 4px 0 #1d4ed8; }
+    .etica .btn-action { background-color: var(--color-etica); box-shadow: 0 4px 0 #047857; }
+    .humano .btn-action { background-color: var(--color-humano); box-shadow: 0 4px 0 #6d28d9; }
+
+    .btn-action:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.05);
+    }
+
+    .btn-action:active {
+      transform: translateY(2px);
+      box-shadow: 0 1px 0 rgba(0,0,0,0.2) !important;
+    }
+    
+    .actions-footer {
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    .btn-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #475569;
+      background: #f1f5f9;
+      border: 3px solid #cbd5e1;
+      padding: 14px 28px;
+      border-radius: 25px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      box-shadow: 0 6px 0px #cbd5e1;
+    }
+
+    .btn-back:hover {
+      background: #e2e8f0;
+      transform: translateY(-2px);
+    }
+
+    .btn-back:active {
+      transform: translateY(4px);
+      box-shadow: 0 2px 0px #cbd5e1;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="main-header">
+    <h1 class="main-title">🚀 Panel Espacial de Misiones Educativas</h1>
+    <p class="main-subtitle">Selecciona un grado para descubrir tus misiones y portales de aprendizaje</p>
+  </div>
+
+  <div class="tabs-container">
+    <input type="radio" name="grades" id="tab1" class="tab-radio" checked>
+    <input type="radio" name="grades" id="tab2" class="tab-radio">
+    <input type="radio" name="grades" id="tab3" class="tab-radio">
+    <input type="radio" name="grades" id="tab4" class="tab-radio">
+    <input type="radio" name="grades" id="tab5" class="tab-radio">
+    <input type="radio" name="grades" id="tab6" class="tab-radio">
+
+    <div class="tabs-nav">
+      <label for="tab1" class="tab-label">🎨 1º Grado</label>
+      <label for="tab2" class="tab-label">🚀 2º Grado</label>
+      <label for="tab3" class="tab-label">🧩 3º Grado</label>
+      <label for="tab4" class="tab-label">💡 4º Grado</label>
+      <label for="tab5" class="tab-label">🧪 5º Grado</label>
+      <label for="tab6" class="tab-label">🏅 6º Grado</label>
+    </div>
+
+    <div class="grade-content" id="content1">
+      <div class="dashboard-row">
+        <div class="dashboard-col">
+          <div class="field-card lenguajes">
+            <div class="field-header"><span class="icon-floating">📚</span> Lenguajes</div>
+            <div class="tools-list">
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">1</span><span class="tool-name">MP – Ortografía 1°</span></div><div class="tool-cell-btn"><a href="https://www.mundoprimaria.com/juegos-educativos/juegos-lenguaje/ortografia/ort-primero" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">2</span><span class="tool-name">MP – Vocabulario 1°</span></div><div class="tool-cell-btn"><a href="https://www.mundoprimaria.com/juegos-educativos/juegos-lenguaje/vocabulario/voc-primero" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">3</span><span class="tool-name">LW – Lectoescritura 1°</span></div><div class="tool-cell-btn"><a href="https://www.liveworksheets.com/es/search-worksheets/language/es/level/primero-de-primaria/subject/lengua-castellana-4578344" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">4</span><span class="tool-name">EP – Lengua 1°</span></div><div class="tool-cell-btn"><a href="https://es.educaplay.com/recursos-educativos/primaria/1_primaria/lengua_castellana/" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">5</span><span class="tool-name">MP – Cuentos para 1°</span></div><div class="tool-cell-btn"><a href="https://www.mundoprimaria.com/cuentos-infantiles-cortos" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="dashboard-col">
+          <div class="field-card saberes">
+            <div class="field-header"><span class="icon-floating">🔬</span> Saberes y P. Científico</div>
+            <div class="tools-list">
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">1</span><span class="tool-name">MP – Matemáticas 1°</span></div><div class="tool-cell-btn"><a href="https://www.mundoprimaria.com/juegos-educativos/juegos-matematicas/numeros/num-primero" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">2</span><span class="tool-name">LW – Matemáticas 1°</span></div><div class="tool-cell-btn"><a href="https://www.liveworksheets.com/es/search-worksheets/language/es/level/primero-de-primaria/subject/matematicas-1061956" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">3</span><span class="tool-name">EP – Matemáticas 1°</span></div><div class="tool-cell-btn"><a href="https://es.educaplay.com/recursos-educativos/primaria/1_primaria/matematicas/" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">4</span><span class="tool-name">MP – Ciencias Naturales 1°</span></div><div class="tool-cell-btn"><a href="https://www.mundoprimaria.com/juegos-educativos/juegos-ciencias/juegos-ciencias-primaria" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">5</span><span class="tool-name">EP – Ciencias 1°</span></div><div class="tool-cell-btn"><a href="https://es.educaplay.com/recursos-educativos/primaria/1_primaria/ciencias_de_la_naturaleza/" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="dashboard-row">
+        <div class="dashboard-col">
+          <div class="field-card etica">
+            <div class="field-header"><span class="icon-floating">🌍</span> Ética, Nat. y Sociedades</div>
+            <div class="tools-list">
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">1</span><span class="tool-name">EP – C. Sociales 1°</span></div><div class="tool-cell-btn"><a href="https://es.educaplay.com/recursos-educativos/primaria/1_primaria/ciencias_sociales/" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">2</span><span class="tool-name">LW – C. Sociales 1°</span></div><div class="tool-cell-btn"><a href="https://www.liveworksheets.com/es/search-worksheets/language/es/level/primero-de-primaria/subject/ciencias-sociales-4578346" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">3</span><span class="tool-name">MP – Fábulas (Valores)</span></div><div class="tool-cell-btn"><a href="https://www.mundoprimaria.com/fabulas-para-ninos" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">4</span><span class="tool-name">EP – Valores 1°</span></div><div class="tool-cell-btn"><a href="https://es.educaplay.com/recursos-educativos/primaria/1_primaria/valores_sociales_y_civicos/" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">5</span><span class="tool-name">MP – Geografía básica 1°</span></div><div class="tool-cell-btn"><a href="https://www.mundoprimaria.com/juegos-educativos/juegos-ciencias/geografia" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="dashboard-col">
+          <div class="field-card humano">
+            <div class="field-header"><span class="icon-floating">🧠</span> De lo Humano y lo Com.</div>
+            <div class="tools-list">
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">1</span><span class="tool-name">EP – Ed. Física 1°</span></div><div class="tool-cell-btn"><a href="https://es.educaplay.com/recursos-educativos/primaria/1_primaria/educacion_fisica/" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">2</span><span class="tool-name">LW – Emociones 1°</span></div><div class="tool-cell-btn"><a href="https://www.liveworksheets.com/es/search-worksheets/language/es/level/primero-de-primaria/subject/valores-y-emociones" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">3</span><span class="tool-name">MP – Dibujos (Hábitos)</span></div><div class="tool-cell-btn"><a href="https://www.mundoprimaria.com/dibujos-para-colorear" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">4</span><span class="tool-name">Web – Nusi y la Primavera</span></div><div class="tool-cell-btn"><a href="https://www.educaixa.com/es/-/nusi-y-la-primavera" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">5</span><span class="tool-name">EP – Socioemocional 1°</span></div><div class="tool-cell-btn"><a href="https://es.educaplay.com/recursos-educativos/primaria/1_primaria/educacion_emocional/" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grade-content" id="content2">
+      <div class="dashboard-row">
+        <div class="dashboard-col">
+          <div class="field-card lenguajes">
+            <div class="field-header"><span class="icon-floating">📚</span> Lenguajes</div>
+            <div class="tools-list">
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">1</span><span class="tool-name">MP – Ortografía 2°</span></div><div class="tool-cell-btn"><a href="https://www.mundoprimaria.com/juegos-educativos/juegos-lenguaje/ortografia/ort-segundo" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">2</span><span class="tool-name">MP – Vocabulario 2°</span></div><div class="tool-cell-btn"><a href="https://www.mundoprimaria.com/juegos-educativos/juegos-lenguaje/vocabulario/voc-segundo" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">3</span><span class="tool-name">LW – Lengua 2°</span></div><div class="tool-cell-btn"><a href="https://www.liveworksheets.com/es/search-worksheets/language/es/level/segundo-de-primaria/subject/lengua-castellana-4578344" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">4</span><span class="tool-name">EP – Lengua 2°</span></div><div class="tool-cell-btn"><a href="https://es.educaplay.com/recursos-educativos/primaria/2_primaria/lengua_castellana/" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">5</span><span class="tool-name">MP – Inglés 1°-2°</span></div><div class="tool-cell-btn"><a href="https://www.mundoprimaria.com/juegos-educativos/juegos-de-ingles/ingles-primero" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="dashboard-col">
+          <div class="field-card saberes">
+            <div class="field-header"><span class="icon-floating">🔬</span> Saberes y P. Científico</div>
+            <div class="tools-list">
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">1</span><span class="tool-name">MP – Matemáticas 2°</span></div><div class="tool-cell-btn"><a href="https://www.mundoprimaria.com/juegos-educativos/juegos-matematicas/numeros/num-segundo" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">2</span><span class="tool-name">LW – Matemáticas 2°</span></div><div class="tool-cell-btn"><a href="https://www.liveworksheets.com/es/search-worksheets/language/es/level/segundo-de-primaria/subject/matematicas-1061956" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">3</span><span class="tool-name">EP – Matemáticas 2°</span></div><div class="tool-cell-btn"><a href="https://es.educaplay.com/recursos-educativos/primaria/2_primaria/matematicas/" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">4</span><span class="tool-name">MP – Ciencias Naturales 2°</span></div><div class="tool-cell-btn"><a href="https://www.mundoprimaria.com/juegos-educativos/juegos-ciencias/juegos-ciencias-segundo" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">5</span><span class="tool-name">EP – Ciencias 2°</span></div><div class="tool-cell-btn"><a href="https://es.educaplay.com/recursos-educativos/primaria/2_primaria/ciencias_de_la_naturaleza/" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="dashboard-row">
+        <div class="dashboard-col">
+          <div class="field-card etica">
+            <div class="field-header"><span class="icon-floating">🌍</span> Ética, Nat. y Sociedades</div>
+            <div class="tools-list">
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">1</span><span class="tool-name">EP – C. Sociales 2°</span></div><div class="tool-cell-btn"><a href="https://es.educaplay.com/recursos-educativos/primaria/2_primaria/ciencias_sociales/" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">2</span><span class="tool-name">LW – C. Sociales 2°</span></div><div class="tool-cell-btn"><a href="https://www.liveworksheets.com/es/search-worksheets/language/es/level/segundo-de-primaria/subject/ciencias-sociales-4578346" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">3</span><span class="tool-name">MP – Leyendas breves 2°</span></div><div class="tool-cell-btn"><a href="https://www.mundoprimaria.com/mitos-y-leyendas-para-ninos" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">4</span><span class="tool-name">EP – Valores 2°</span></div><div class="tool-cell-btn"><a href="https://es.educaplay.com/recursos-educativos/primaria/2_primaria/valores_sociales_y_civicos/" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">5</span><span class="tool-name">MP – Geografía (Paisajes)</span></div><div class="tool-cell-btn"><a href="https://www.mundoprimaria.com/juegos-educativos/juegos-ciencias/geografia" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="dashboard-col">
+          <div class="field-card humano">
+            <div class="field-header"><span class="icon-floating">🧠</span> De lo Humano y lo Com.</div>
+            <div class="tools-list">
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">1</span><span class="tool-name">EP – Ed. Física 2°</span></div><div class="tool-cell-btn"><a href="https://es.educaplay.com/recursos-educativos/primaria/2_primaria/educacion_fisica/" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">2</span><span class="tool-name">LW – Emociones 2°</span></div><div class="tool-cell-btn"><a href="https://www.liveworksheets.com/es/search-worksheets/language/es/level/segundo-de-primaria/subject/valores-y-emociones" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">3</span><span class="tool-name">MP – Dibujos (Alimentación)</span></div><div class="tool-cell-btn"><a href="https://www.mundoprimaria.com/dibujos-para-colorear" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">4</span><span class="tool-name">Web – Petol y el Señor Roble</span></div><div class="tool-cell-btn"><a href="https://www.educaixa.com/-/petol-y-el-senor-roble" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">5</span><span class="tool-name">EP – Socioemocional 2°</span></div><div class="tool-cell-btn"><a href="https://es.educaplay.com/recursos-educativos/primaria/2_primaria/educacion_emocional/" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grade-content" id="content3">
+      <div class="dashboard-row">
+        <div class="dashboard-col">
+          <div class="field-card lenguajes">
+            <div class="field-header"><span class="icon-floating">📚</span> Lenguajes</div>
+            <div class="tools-list">
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">1</span><span class="tool-name">MP – Ortografía 3°</span></div><div class="tool-cell-btn"><a href="https://www.mundoprimaria.com/juegos-educativos/juegos-lenguaje/ortografia/ort-tercero" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">2</span><span class="tool-name">MP – Vocabulario 3°</span></div><div class="tool-cell-btn"><a href="https://www.mundoprimaria.com/juegos-educativos/juegos-lenguaje/vocabulario/voc-tercero" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">3</span><span class="tool-name">LW – Lengua 3°</span></div><div class="tool-cell-btn"><a href="https://www.liveworksheets.com/es/search-worksheets/language/es/level/tercero-de-primaria/subject/lengua-castellana-4578344" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">4</span><span class="tool-name">EP – Lengua 3°</span></div><div class="tool-cell-btn"><a href="https://es.educaplay.com/recursos-educativos/primaria/3_primaria/lengua_castellana/" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">5</span><span class="tool-name">MP – Inglés 3°-4°</span></div><div class="tool-cell-btn"><a href="https://www.mundoprimaria.com/juegos-educativos/juegos-de-ingles/ingles-tercero" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="dashboard-col">
+          <div class="field-card saberes">
+            <div class="field-header"><span class="icon-floating">🔬</span> Saberes y P. Científico</div>
+            <div class="tools-list">
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">1</span><span class="tool-name">MP – Matemáticas 3°</span></div><div class="tool-cell-btn"><a href="https://www.mundoprimaria.com/juegos-educativos/juegos-matematicas/numeros/num-tercero" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">2</span><span class="tool-name">LW – Matemáticas 3°</span></div><div class="tool-cell-btn"><a href="https://www.liveworksheets.com/es/search-worksheets/language/es/level/tercero-de-primaria/subject/matematicas-1061956" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">3</span><span class="tool-name">EP – Matemáticas 3°</span></div><div class="tool-cell-btn"><a href="https://es.educaplay.com/recursos-educativos/primaria/3_primaria/matematicas/" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">4</span><span class="tool-name">MP – Ciencias Naturales 3°</span></div><div class="tool-cell-btn"><a href="https://www.mundoprimaria.com/juegos-educativos/juegos-ciencias/juegos-ciencias-tercero" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">5</span><span class="tool-name">EP – Ciencias 3°</span></div><div class="tool-cell-btn"><a href="https://es.educaplay.com/recursos-educativos/primaria/3_primaria/ciencias_de_la_naturaleza/" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="dashboard-row">
+        <div class="dashboard-col">
+          <div class="field-card etica">
+            <div class="field-header"><span class="icon-floating">🌍</span> Ética, Nat. y Sociedades</div>
+            <div class="tools-list">
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">1</span><span class="tool-name">EP – C. Sociales 3°</span></div><div class="tool-cell-btn"><a href="https://es.educaplay.com/recursos-educativos/primaria/3_primaria/ciencias_sociales/" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">2</span><span class="tool-name">LW – C. Sociales 3°</span></div><div class="tool-cell-btn"><a href="https://www.liveworksheets.com/es/search-worksheets/language/es/level/tercero-de-primaria/subject/ciencias-sociales-4578346" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">3</span><span class="tool-name">Web – Toporopa Mapas</span></div><div class="tool-cell-btn"><a href="https://www.toporopa.eu/es/" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">4</span><span class="tool-name">EP – Valores 3°</span></div><div class="tool-cell-btn"><a href="https://es.educaplay.com/recursos-educativos/primaria/3_primaria/valores_sociales_y_civicos/" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">5</span><span class="tool-name">MP – Historia de España 3°</span></div><div class="tool-cell-btn"><a href="https://www.mundoprimaria.com/juegos-educativos/juegos-ciencias/historia" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="dashboard-col">
+          <div class="field-card humano">
+            <div class="field-header"><span class="icon-floating">🧠</span> De lo Humano y lo Com.</div>
+            <div class="tools-list">
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">1</span><span class="tool-name">EP – Ed. Física 3°</span></div><div class="tool-cell-btn"><a href="https://es.educaplay.com/recursos-educativos/primaria/3_primaria/educacion_fisica/" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">2</span><span class="tool-name">LW – Emociones 3°</span></div><div class="tool-cell-btn"><a href="https://www.liveworksheets.com/es/search-worksheets/language/es/level/tercero-de-primaria/subject/valores-y-emociones" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">3</span><span class="tool-name">MP – Juegos de Mente 3°</span></div><div class="tool-cell-btn"><a href="https://www.mundoprimaria.com/juegos-educativos" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">4</span><span class="tool-name">Web – El Enigma de los Dados</span></div><div class="tool-cell-btn"><a href="https://www.educaixa.com/" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">5</span><span class="tool-name">EP – Socioemocional 3°</span></div><div class="tool-cell-btn"><a href="https://es.educaplay.com/recursos-educativos/primaria/3_primaria/educacion_emocional/" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grade-content" id="content4">
+      <div class="dashboard-row">
+        <div class="dashboard-col">
+          <div class="field-card lenguajes">
+            <div class="field-header"><span class="icon-floating">📚</span> Lenguajes</div>
+            <div class="tools-list">
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">1</span><span class="tool-name">MP – Ortografía 4°</span></div><div class="tool-cell-btn"><a href="https://www.mundoprimaria.com/juegos-educativos/juegos-lenguaje/ortografia/ort-cuarto" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">2</span><span class="tool-name">MP – Vocabulario 4°</span></div><div class="tool-cell-btn"><a href="https://www.mundoprimaria.com/juegos-educativos/juegos-lenguaje/vocabulario/voc-cuarto" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">3</span><span class="tool-name">LW – Lengua 4°</span></div><div class="tool-cell-btn"><a href="https://www.liveworksheets.com/es/search-worksheets/language/es/level/cuarto-de-primaria/subject/lengua-castellana-4578344" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">4</span><span class="tool-name">EP – Lengua 4°</span></div><div class="tool-cell-btn"><a href="https://es.educaplay.com/recursos-educativos/primaria/4_primaria/lengua_castellana/" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">5</span><span class="tool-name">MP – Inglés 4° Avanzado</span></div><div class="tool-cell-btn"><a href="https://www.mundoprimaria.com/juegos-educativos/juegos-de-ingles/ingles-cuarto" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="dashboard-col">
+          <div class="field-card saberes">
+            <div class="field-header"><span class="icon-floating">🔬</span> Saberes y P. Científico</div>
+            <div class="tools-list">
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">1</span><span class="tool-name">MP – Matemáticas 4°</span></div><div class="tool-cell-btn"><a href="https://www.mundoprimaria.com/juegos-educativos/juegos-matematicas/numeros/num-cuarto" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">2</span><span class="tool-name">LW – Matemáticas 4°</span></div><div class="tool-cell-btn"><a href="https://www.liveworksheets.com/es/search-worksheets/language/es/level/cuarto-de-primaria/subject/matematicas-1061956" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">3</span><span class="tool-name">EP – Matemáticas 4°</span></div><div class="tool-cell-btn"><a href="https://es.educaplay.com/recursos-educativos/primaria/4_primaria/matematicas/" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">4</span><span class="tool-name">MP – Ciencias Naturales 4°</span></div><div class="tool-cell-btn"><a href="https://www.mundoprimaria.com/juegos-educativos/juegos-ciencias/juegos-ciencias-cuarto" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">5</span><span class="tool-name">EP – Ciencias 4°</span></div><div class="tool-cell-btn"><a href="https://es.educaplay.com/recursos-educativos/primaria/4_primaria/ciencias_de_la_naturaleza/" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="dashboard-row">
+        <div class="dashboard-col">
+          <div class="field-card etica">
+            <div class="field-header"><span class="icon-floating">🌍</span> Ética, Nat. y Sociedades</div>
+            <div class="tools-list">
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">1</span><span class="tool-name">EP – C. Sociales 4°</span></div><div class="tool-cell-btn"><a href="https://es.educaplay.com/recursos-educativos/primaria/4_primaria/ciencias_sociales/" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">2</span><span class="tool-name">LW – C. Sociales 4°</span></div><div class="tool-cell-btn"><a href="https://www.liveworksheets.com/es/search-worksheets/language/es/level/cuarto-de-primaria/subject/ciencias-sociales-4578346" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">3</span><span class="tool-name">Web – Vikidia Enciclopedia</span></div><div class="tool-cell-btn"><a href="https://es.vikidia.org/" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">4</span><span class="tool-name">EP – Valores 4°</span></div><div class="tool-cell-btn"><a href="https://es.educaplay.com/recursos-educativos/primaria/4_primaria/valores_sociales_y_civicos/" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">5</span><span class="tool-name">MP – Atlas del Mundo 4°</span></div><div class="tool-cell-btn"><a href="https://www.mundoprimaria.com/juegos-educativos/juegos-ciencias/geografia" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="dashboard-col">
+          <div class="field-card humano">
+            <div class="field-header"><span class="icon-floating">🧠</span> De lo Humano y lo Com.</div>
+            <div class="tools-list">
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">1</span><span class="tool-name">EP – Ed. Física 4°</span></div><div class="tool-cell-btn"><a href="https://es.educaplay.com/recursos-educativos/primaria/4_primaria/educacion_fisica/" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">2</span><span class="tool-name">LW – Emociones 4°</span></div><div class="tool-cell-btn"><a href="https://www.liveworksheets.com/es/search-worksheets/language/es/level/cuarto-de-primaria/subject/valores-y-emociones" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">3</span><span class="tool-name">MP – Infografías de Salud</span></div><div class="tool-cell-btn"><a href="https://www.mundoprimaria.com/" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">4</span><span class="tool-name">Web – El Espejo de las Emociones</span></div><div class="tool-cell-btn"><a href="https://www.educaixa.com/" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">5</span><span class="tool-name">EP – Socioemocional 4°</span></div><div class="tool-cell-btn"><a href="https://es.educaplay.com/recursos-educativos/primaria/4_primaria/educacion_emocional/" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grade-content" id="content5">
+      <div class="dashboard-row">
+        <div class="dashboard-col">
+          <div class="field-card lenguajes">
+            <div class="field-header"><span class="icon-floating">📚</span> Lenguajes</div>
+            <div class="tools-list">
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">1</span><span class="tool-name">MP – Ortografía 5°</span></div><div class="tool-cell-btn"><a href="https://www.mundoprimaria.com/juegos-educativos/juegos-lenguaje/ortografia/ort-quinto" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">2</span><span class="tool-name">MP – Vocabulario 5°</span></div><div class="tool-cell-btn"><a href="https://www.mundoprimaria.com/juegos-educativos/juegos-lenguaje/vocabulario/voc-quinto" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">3</span><span class="tool-name">LW – Lengua 5°</span></div><div class="tool-cell-btn"><a href="https://www.liveworksheets.com/es/search-worksheets/language/es/level/quinto-de-primaria/subject/lengua-castellana-4578344" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">4</span><span class="tool-name">EP – Lengua 5°</span></div><div class="tool-cell-btn"><a href="https://es.educaplay.com/recursos-educativos/primaria/5_primaria/lengua_castellana/" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">5</span><span class="tool-name">MP – Inglés 5° Primaria</span></div><div class="tool-cell-btn"><a href="https://www.mundoprimaria.com/juegos-educativos/juegos-de-ingles/ingles-quinto" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="dashboard-col">
+          <div class="field-card saberes">
+            <div class="field-header"><span class="icon-floating">🔬</span> Saberes y P. Científico</div>
+            <div class="tools-list">
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">1</span><span class="tool-name">MP – Matemáticas 5°</span></div><div class="tool-cell-btn"><a href="https://www.mundoprimaria.com/juegos-educativos/juegos-matematicas/numeros/num-quinto" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">2</span><span class="tool-name">LW – Matemáticas 5°</span></div><div class="tool-cell-btn"><a href="https://www.liveworksheets.com/es/search-worksheets/language/es/level/quinto-de-primaria/subject/matematicas-1061956" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">3</span><span class="tool-name">EP – Matemáticas 5°</span></div><div class="tool-cell-btn"><a href="https://es.educaplay.com/recursos-educativos/primaria/5_primaria/matematicas/" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">4</span><span class="tool-name">MP – Ciencias Naturales 5°</span></div><div class="tool-cell-btn"><a href="https://www.mundoprimaria.com/juegos-educativos/juegos-ciencias/juegos-ciencias-quinto" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">5</span><span class="tool-name">EP – Ciencias 5°</span></div><div class="tool-cell-btn"><a href="https://es.educaplay.com/recursos-educativos/primaria/5_primaria/ciencias_de_la_naturaleza/" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="dashboard-row">
+        <div class="dashboard-col">
+          <div class="field-card etica">
+            <div class="field-header"><span class="icon-floating">🌍</span> Ética, Nat. y Sociedades</div>
+            <div class="tools-list">
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">1</span><span class="tool-name">EP – C. Sociales 5°</span></div><div class="tool-cell-btn"><a href="https://es.educaplay.com/recursos-educativos/primaria/5_primaria/ciencias_sociales/" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">2</span><span class="tool-name">LW – C. Sociales 5°</span></div><div class="tool-cell-btn"><a href="https://www.liveworksheets.com/es/search-worksheets/language/es/level/quinto-de-primaria/subject/ciencias-sociales-4578346" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">3</span><span class="tool-name">Web – Geografía Mundial</span></div><div class="tool-cell-btn"><a href="https://world-geography-games.com/es/" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">4</span><span class="tool-name">EP – Valores 5°</span></div><div class="tool-cell-btn"><a href="https://es.educaplay.com/recursos-educativos/primaria/5_primaria/valores_sociales_y_civicos/" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">5</span><span class="tool-name">MP – Trivia de Historia 5°</span></div><div class="tool-cell-btn"><a href="https://www.mundoprimaria.com/juegos-educativos/juegos-ciencias/historia" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="dashboard-col">
+          <div class="field-card humano">
+            <div class="field-header"><span class="icon-floating">🧠</span> De lo Humano y lo Com.</div>
+            <div class="tools-list">
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">1</span><span class="tool-name">EP – Ed. Física 5°</span></div><div class="tool-cell-btn"><a href="https://es.educaplay.com/recursos-educativos/primaria/5_primaria/educacion_fisica/" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">2</span><span class="tool-name">LW – Emociones 5°</span></div><div class="tool-cell-btn"><a href="https://www.liveworksheets.com/es/search-worksheets/language/es/level/quinto-de-primaria/subject/valores-y-emociones" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">3</span><span class="tool-name">MP – Retos en Equipo</span></div><div class="tool-cell-btn"><a href="https://www.mundoprimaria.com/" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">4</span><span class="tool-name">Web – Proyecto Mochil (Emoc.)</span></div><div class="tool-cell-btn"><a href="https://www.educaixa.com/" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">5</span><span class="tool-name">EP – Socioemocional 5°</span></div><div class="tool-cell-btn"><a href="https://es.educaplay.com/recursos-educativos/primaria/5_primaria/educacion_emocional/" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grade-content" id="content6">
+      <div class="dashboard-row">
+        <div class="dashboard-col">
+          <div class="field-card lenguajes">
+            <div class="field-header"><span class="icon-floating">📚</span> Lenguajes</div>
+            <div class="tools-list">
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">1</span><span class="tool-name">MP – Ortografía 6°</span></div><div class="tool-cell-btn"><a href="https://www.mundoprimaria.com/juegos-educativos/juegos-lenguaje/ortografia/ort-sexto" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">2</span><span class="tool-name">MP – Vocabulario 6°</span></div><div class="tool-cell-btn"><a href="https://www.mundoprimaria.com/juegos-educativos/juegos-lenguaje/vocabulario/voc-sexto" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">3</span><span class="tool-name">LW – Lengua 6°</span></div><div class="tool-cell-btn"><a href="https://www.liveworksheets.com/es/search-worksheets/language/es/level/sexto-de-primaria/subject/lengua-castellana-4578344" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">4</span><span class="tool-name">EP – Lengua 6°</span></div><div class="tool-cell-btn"><a href="https://es.educaplay.com/recursos-educativos/primaria/6_primaria/lengua_castellana/" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">5</span><span class="tool-name">MP – Inglés Avanzado 6°</span></div><div class="tool-cell-btn"><a href="https://www.mundoprimaria.com/juegos-educativos/juegos-de-ingles/ingles-sexto" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="dashboard-col">
+          <div class="field-card saberes">
+            <div class="field-header"><span class="icon-floating">🔬</span> Saberes y P. Científico</div>
+            <div class="tools-list">
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">1</span><span class="tool-name">MP – Matemáticas 6°</span></div><div class="tool-cell-btn"><a href="https://www.mundoprimaria.com/juegos-educativos/juegos-matematicas/numeros/num-sexto" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">2</span><span class="tool-name">LW – Matemáticas 6°</span></div><div class="tool-cell-btn"><a href="https://www.liveworksheets.com/es/search-worksheets/language/es/level/sexto-de-primaria/subject/matematicas-1061956" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">3</span><span class="tool-name">EP – Matemáticas 6°</span></div><div class="tool-cell-btn"><a href="https://es.educaplay.com/recursos-educativos/primaria/6_primaria/matematicas/" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">4</span><span class="tool-name">MP – Ciencias Naturales 6°</span></div><div class="tool-cell-btn"><a href="https://www.mundoprimaria.com/juegos-educativos/juegos-ciencias/juegos-ciencias-sexto" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">5</span><span class="tool-name">EP – Ciencias 6°</span></div><div class="tool-cell-btn"><a href="https://es.educaplay.com/recursos-educativos/primaria/6_primaria/ciencias_de_la_naturaleza/" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="dashboard-row">
+        <div class="dashboard-col">
+          <div class="field-card etica">
+            <div class="field-header"><span class="icon-floating">🌍</span> Ética, Nat. y Sociedades</div>
+            <div class="tools-list">
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">1</span><span class="tool-name">EP – C. Sociales 6°</span></div><div class="tool-cell-btn"><a href="https://es.educaplay.com/recursos-educativos/primaria/6_primaria/ciencias_sociales/" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">2</span><span class="tool-name">LW – C. Sociales 6°</span></div><div class="tool-cell-btn"><a href="https://www.liveworksheets.com/es/search-worksheets/language/es/level/sexto-de-primaria/subject/ciencias-sociales-4578346" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">3</span><span class="tool-name">Web – Mapas Interactivos</span></div><div class="tool-cell-btn"><a href="https://world-geography-games.com/es/" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">4</span><span class="tool-name">EP – Valores 6°</span></div><div class="tool-cell-btn"><a href="https://es.educaplay.com/recursos-educativos/primaria/6_primaria/valores_sociales_y_civicos/" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">5</span><span class="tool-name">MP – Trivia de Historia 6°</span></div><div class="tool-cell-btn"><a href="https://www.mundoprimaria.com/juegos-educativos/juegos-ciencias/historia" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="dashboard-col">
+          <div class="field-card humano">
+            <div class="field-header"><span class="icon-floating">🧠</span> De lo Humano y lo Com.</div>
+            <div class="tools-list">
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">1</span><span class="tool-name">EP – Ed. Física 6°</span></div><div class="tool-cell-btn"><a href="https://es.educaplay.com/recursos-educativos/primaria/6_primaria/educacion_fisica/" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">2</span><span class="tool-name">LW – Emociones 6°</span></div><div class="tool-cell-btn"><a href="https://www.liveworksheets.com/es/search-worksheets/language/es/level/sexto-de-primaria/subject/valores-y-emociones" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">3</span><span class="tool-name">MP – Liderazgo y Dilemas</span></div><div class="tool-cell-btn"><a href="https://www.mundoprimaria.com/" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">4</span><span class="tool-name">Web – Proyecto Mochil 6°</span></div><div class="tool-cell-btn"><a href="https://www.educaixa.com/" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+              <div class="tool-item"><div class="tool-cell-info"><span class="tool-number">5</span><span class="tool-name">EP – Valores y Emociones 6°</span></div><div class="tool-cell-btn"><a href="https://es.educaplay.com/recursos-educativos/primaria/6_primaria/educacion_emocional/" class="btn-action" target="_blank" rel="noopener noreferrer">Misión</a></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="actions-footer">
+    <a href="index.html" class="btn-back">⬅ Volver al Menú Principal</a>
+  </div>
+
+</body>
+</html>

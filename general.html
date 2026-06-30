@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mi Proyecto - Datos</title>
+  <link rel="icon" type="image/png" href="img/favicon.png">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@500;700&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Quicksand', sans-serif;
+      
+     
+      background: linear-gradient(45deg, #fbc2eb 0%, #a6c1ee 50%, #b18bfb 100%);
+      background-size: 200% 200%;
+      background-attachment: fixed;
+      animation: movimientoFondo 12s ease infinite alternate;
+      
+      color: #2c3e50;
+      padding: 40px 20px 60px 20px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    @keyframes movimientoFondo {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 100% 50%; }
+    }
+
+    
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background-image: 
+        radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.4) 0%, transparent 20%),
+        radial-gradient(circle at 85% 80%, rgba(255, 255, 255, 0.3) 0%, transparent 25%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+  
+    .estrella-flotante {
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      background: white;
+      /* Este clip-path dibuja una estrella mágica de 4 puntas perfecta sin usar emojis */
+      clip-path: polygon(50% 0%, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0% 50%, 39% 39%);
+      z-index: 1;
+      opacity: 0;
+      pointer-events: none;
+      user-select: none;
+      animation: caerYGirarEstrella 12s linear infinite;
+    }
+
+    @keyframes caerYGirarEstrella {
+      0% { transform: translateY(-50px) rotate(0deg); opacity: 0; }
+      10% { opacity: 0.8; }
+      50% { transform: translateY(50vh) rotate(180deg) scale(1.2); opacity: 0.9; }
+      90% { opacity: 0.8; }
+      100% { transform: translateY(100vh) rotate(360deg) scale(0.8); opacity: 0; }
+    }
+
+    
+    .mission-card {
+      max-width: 850px;
+      width: 100%;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.96);
+      padding: 45px 35px;
+      border-radius: 40px;
+      border: 6px solid #fff;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+      z-index: 2;
+      position: relative;
+    }
+
+    h1 { 
+      font-family: 'Fredoka', sans-serif;
+      color: #fff; 
+      font-size: clamp(2rem, 6vw, 3.2rem); 
+      margin-bottom: 15px; 
+      text-align: center; 
+      /* Borde de texto 3D */
+      text-shadow: -3px -3px 0 #3f51b5, 3px -3px 0 #3f51b5, -3px 4px 0 #3f51b5, 3px 4px 0 #3f51b5,
+                   0px 6px 0px #ffeb3b, 0px 10px 15px rgba(0,0,0,0.15);
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #576574;
+      line-height: 1.6;
+      margin-bottom: 35px;
+    }
+
+    .data-box {
+      background: #f8fafc;
+      padding: 25px;
+      border-radius: 25px;
+      border: 4px solid #e2e8f0;
+      margin: 25px 0;
+      box-shadow: 0 6px 0px #e2e8f0;
+      transition: transform 0.2s ease;
+    }
+
+    .data-box:hover {
+      transform: scale(1.01);
+    }
+
+   
+    .data-box:nth-of-type(1) { border-color: #f87171; box-shadow: 0 6px 0px #f87171; }
+    .data-box:nth-of-type(2) { border-color: #fbbf24; box-shadow: 0 6px 0px #fbbf24; }
+    .data-box:nth-of-type(3) { border-color: #34d399; box-shadow: 0 6px 0px #34d399; }
+    .data-box:nth-of-type(4) { border-color: #a78bfa; box-shadow: 0 6px 0px #a78bfa; }
+    .data-box:nth-of-type(5) { border-color: #60a5fa; box-shadow: 0 6px 0px #60a5fa; }
+    .data-box:nth-of-type(6) { border-color: #f472b6; box-shadow: 0 6px 0px #f472b6; }
+    .data-box:nth-of-type(7) { border-color: #34d399; box-shadow: 0 6px 0px #34d399; }
+
+    .data-box h3 { 
+      font-family: 'Fredoka', sans-serif;
+      font-size: 1.4rem;
+      margin-bottom: 10px; 
+      color: #1e293b;
+    }
+    
+    .data-box p, .data-box li {
+      font-size: 1.1rem;
+      color: #475569;
+      line-height: 1.6;
+      font-weight: 600;
+    }
+
+    ul { 
+      padding-left: 25px; 
+    }
+
+    li {
+      margin-bottom: 8px;
+    }
+
+  
+    .addie-fase {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 10px;
+      color: white;
+      font-weight: 700;
+      margin-right: 5px;
+    }
+    .f-a { background: #f87171; }
+    .f-d1 { background: #fbbf24; }
+    .f-d2 { background: #34d399; }
+    .f-i { background: #a78bfa; }
+    .f-e { background: #60a5fa; }
+
+   
+    .back-button {
+      display: block;
+      width: fit-content;
+      margin: 40px auto 0;
+      padding: 14px 40px;
+      background: #4a148c;
+      color: white;
+      text-decoration: none;
+      border-radius: 30px;
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 700;
+      font-size: 1.2rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border: 3px solid #fff;
+      box-shadow: 0 6px 0 #2a085c;
+      transition: all 0.15s ease;
+      text-align: center;
+    }
+
+    .back-button:hover { 
+      transform: translateY(-2px);
+      filter: brightness(1.1);
+    }
+    
+    .back-button:active {
+      transform: translateY(4px);
+      box-shadow: 0 2px 0 rgba(0,0,0,0.2);
+    }
+
+    /* Adaptabilidad Movil Inteligente */
+    @media (max-width: 600px) {
+      body { padding: 20px 10px; }
+      .mission-card { padding: 30px 15px; border-radius: 30px; }
+      h1 { font-size: 1.8rem; }
+      .data-box { padding: 18px; margin: 15px 0; }
+      .back-button { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="estrella-flotante" style="left: 8%; animation-duration: 9s; animation-delay: 1s;"></div>
+  <div class="estrella-flotante" style="left: 22%; animation-duration: 14s; animation-delay: 0s; width: 16px; height: 16px;"></div>
+  <div class="estrella-flotante" style="left: 40%; animation-duration: 11s; animation-delay: 4s; width: 28px; height: 28px;"></div>
+  <div class="estrella-flotante" style="left: 73%; animation-duration: 15s; animation-delay: 2s; width: 14px; height: 14px;"></div>
+  <div class="estrella-flotante" style="left: 88%; animation-duration: 10s; animation-delay: 3s;"></div>
+
+  <main class="mission-card">
+    <h1>Datos del Proyecto</h1>
+    <p class="subtitle">Proyecto escolar basado en el modelo ADDIE <br> 
+    Implementacion gradual de la tecnologia con material didactico en un contexto sin internet.</p>
+
+    <div class="data-box">
+      <h3>Nombre del proyecto</h3>
+      <p>Aprendiendo con materiales: primeros pasos hacia la tecnologia</p>
+    </div>
+
+    <div class="data-box">
+      <h3>Contexto</h3>
+      <p>Escuela sin internet, sin uso de tecnologia y con estudiantes que no tienen conocimientos previos sobre herramientas tecnologicas. La falta de recursos economicos afecta la disponibilidad de elementos tecnologicos.<br><br>
+      <strong>Enfoque:</strong> Implementacion pasiva, gradual y accesible a partir del modelo ADDIE.</p>
+    </div>
+    
+    <div class="data-box">
+      <h3>Introduccion</h3>
+      <p>En la actualidad, la tecnologia forma parte de la vida cotidiana y del aprendizaje escolar. Este proyecto se basa en el modelo ADDIE, un proceso de diseño instruccional que permite analizar las necesidades del contexto y valorar los resultados. Su finalidad es introducir nociones basicas de tecnologia mediante recursos impresos, dinamicas guiadas y materiales concretos que no requieren conexion a internet.</p>
+    </div>
+    
+    <div class="data-box">
+      <h3>Problematica</h3>
+      <p>En la escuela se observa la ausencia total de recursos tecnologicos y de conectividad, lo cual limita la posibilidad de que los estudiantes se familiaricen con herramientas digitales. Por ello, surge la necesidad de disenar una intervencion didactica que no dependa de internet ni de equipos complejos.</p>
+    </div>
+
+    <div class="data-box">
+      <h3>Objetivo general</h3>
+      <p>Introducir de manera progresiva y pasiva a los estudiantes en el reconocimiento basico de la tecnologia, mediante materiales didacticos concretos y actividades guiadas, tomando como base las fases del modelo ADDIE.</p>
+    </div>
+    
+    <div class="data-box">
+      <h3>Objetivos especificos</h3>
+      <ul>
+        <li><strong>Tercer grado:</strong> Implementar herramientas tecnologicas que permitan el desarrollo de las capacidades de memorizacion aleatoria de las tablas de multiplicar.</li>
+        <li><strong>Cuarto grado:</strong> Desarrollar habilidades para el trazo de angulos utilizando herramientas tecnologicas.</li>
+        <li><strong>Cuarto grado:</strong> Fortalecer la habilidad de los alumnos para realizar divisiones a traves de juegos didacticos basados en la tecnologia.</li>
+        <li><strong>Quinto grado:</strong> Mejorar las habilidades logico-matematicas con la ayuda de explicaciones claras mediante el uso de las TIC.</li>
+      </ul>
+    </div>
+        
+    <div class="data-box">
+      <h3>Desarrollo del proyecto (ADDIE)</h3>
+      <p style="margin-top: 5px;">
+        <span class="addie-fase f-a">A</span> <strong>Analisis:</strong> Identificar las necesidades del grupo y limitaciones del contexto.<br><br>
+        <span class="addie-fase f-d1">D</span> <strong>Diseno:</strong> Planear actividades con apoyo de material didactico (fichas, tarjetas, objetos).<br><br>
+        <span class="addie-fase f-d2">D</span> <strong>Desarrollo:</strong> Elaborar recursos impresos y manipulables.<br><br>
+        <span class="addie-fase f-i">I</span> <strong>Implementacion:</strong> Aplicar actividades de forma guiada sin uso de internet.<br><br>
+        <span class="addie-fase f-e">E</span> <strong>Evaluacion:</strong> Valorar el avance mediante observacion y ejercicios practicos.
+      </p>
+    </div>
+    
+    <a href="index.html" class="back-button">Volver al inicio</a>
+  </main>
+
+</body>
+</html>

@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Herramientas Canva</title>
+  <link rel="icon" type="image/png" href="img/favicon.png">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@500;700&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Quicksand', sans-serif;
+      background: linear-gradient(45deg, #fbc2eb 0%, #a6c1ee 50%, #b18bfb 100%);
+      background-size: 200% 200%;
+      background-attachment: fixed;
+      animation: movimientoFondo 12s ease infinite alternate;
+      color: #2c3e50;
+      padding: 40px 20px 60px 20px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    @keyframes movimientoFondo {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 100% 50%; }
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background-image: 
+        radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.4) 0%, transparent 20%),
+        radial-gradient(circle at 85% 80%, rgba(255, 255, 255, 0.3) 0%, transparent 25%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .estrella-flotante {
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      background: white;
+      clip-path: polygon(50% 0%, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0% 50%, 39% 39%);
+      z-index: 1;
+      opacity: 0;
+      pointer-events: none;
+      user-select: none;
+      animation: caerYGirarEstrella 12s linear infinite;
+    }
+
+    @keyframes caerYGirarEstrella {
+      0% { transform: translateY(-50px) rotate(0deg); opacity: 0; }
+      10% { opacity: 0.8; }
+      50% { transform: translateY(50vh) rotate(180deg) scale(1.2); opacity: 0.9; }
+      90% { opacity: 0.8; }
+      100% { transform: translateY(100vh) rotate(360deg) scale(0.8); opacity: 0; }
+    }
+
+    .container { 
+      max-width: 850px; 
+      width: 100%;
+      margin: 0 auto; 
+      z-index: 2;
+      position: relative;
+    }
+
+    h1 { 
+      font-family: 'Fredoka', sans-serif;
+      color: #fff; 
+      font-size: clamp(2rem, 7vw, 3.2rem); 
+      margin-bottom: 35px; 
+      text-align: center; 
+      text-shadow: -3px -3px 0 #3f51b5, 3px -3px 0 #3f51b5, -3px 4px 0 #3f51b5, 3px 4px 0 #3f51b5,
+                   0px 6px 0px #ffeb3b, 0px 10px 15px rgba(0,0,0,0.15);
+    }
+
+    .tool-card {
+      background: rgba(255, 255, 255, 0.96);
+      padding: 35px;
+      border-radius: 35px;
+      border: 5px solid #fff;
+      box-shadow: 0 12px 25px rgba(0,0,0,0.1);
+      margin-bottom: 35px;
+      transition: transform 0.2s ease;
+      position: relative;
+    }
+
+    .tool-card:hover {
+      transform: translateY(-3px);
+    }
+
+    /* Bordes de colores según el grado para consistencia visual */
+    .tool-card:nth-of-type(6n+1) { border-left: 10px solid #f87171; }
+    .tool-card:nth-of-type(6n+2) { border-left: 10px solid #fbbf24; }
+    .tool-card:nth-of-type(6n+3) { border-left: 10px solid #a78bfa; }
+    .tool-card:nth-of-type(6n+4) { border-left: 10px solid #60a5fa; }
+    .tool-card:nth-of-type(6n+5) { border-left: 10px solid #34d399; }
+    .tool-card:nth-of-type(6n+6) { border-left: 10px solid #f472b6; }
+
+    .tool-title { 
+      font-family: 'Fredoka', sans-serif;
+      font-size: 1.8rem; 
+      color: #1e293b; 
+      margin-bottom: 15px; 
+    }
+    
+    .grade-badge { 
+      display: inline-block;
+      padding: 6px 16px; 
+      color: white; 
+      border-radius: 50px; 
+      font-size: 0.95rem; 
+      font-weight: 700;
+      margin-bottom: 15px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .tool-card:nth-of-type(6n+1) .grade-badge { background: #f87171; }
+    .tool-card:nth-of-type(6n+2) .grade-badge { background: #fbbf24; color: #1e293b; }
+    .tool-card:nth-of-type(6n+3) .grade-badge { background: #a78bfa; }
+    .tool-card:nth-of-type(6n+4) .grade-badge { background: #60a5fa; }
+    .tool-card:nth-of-type(6n+5) .grade-badge { background: #34d399; }
+    .tool-card:nth-of-type(6n+6) .grade-badge { background: #f472b6; }
+
+    .description { 
+      font-size: 1.1rem;
+      color: #475569;
+      line-height: 1.6; 
+      font-weight: 600;
+      margin-bottom: 25px; 
+    }
+
+    .button-group { 
+      display: flex; 
+      flex-wrap: wrap; 
+      gap: 12px; 
+    }
+
+    .link-button {
+      display: inline-block;
+      padding: 12px 24px;
+      background: #34d399;
+      color: white;
+      text-decoration: none;
+      border-radius: 25px;
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      border: 3px solid #fff;
+      box-shadow: 0 4px 0 #10b981;
+      transition: all 0.1s ease;
+    }
+
+    .link-button:hover { 
+      background: #22c55e;
+      transform: translateY(-1px);
+    }
+
+    .link-button:active {
+      transform: translateY(3px);
+      box-shadow: 0 1px 0 rgba(0,0,0,0.1);
+    }
+
+    .link-button:not(:first-of-type) {
+      background: #60a5fa;
+      box-shadow: 0 4px 0 #3b82f6;
+    }
+    .link-button:not(:first-of-type):hover {
+      background: #3b82f6;
+    }
+
+    .back-button {
+      display: block;
+      width: fit-content;
+      margin: 40px auto 0;
+      padding: 14px 40px;
+      background: #4a148c;
+      color: white;
+      text-decoration: none;
+      border-radius: 30px;
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 700;
+      font-size: 1.2rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border: 3px solid #fff;
+      box-shadow: 0 6px 0 #2a085c;
+      transition: all 0.15s ease;
+      text-align: center;
+    }
+
+    .back-button:hover { 
+      transform: translateY(-2px);
+      filter: brightness(1.1);
+    }
+    
+    .back-button:active {
+      transform: translateY(4px);
+      box-shadow: 0 2px 0 rgba(0,0,0,0.2);
+    }
+
+    @media (max-width: 600px) {
+      body { padding: 20px 10px; }
+      .tool-card { padding: 25px 20px; border-radius: 25px; margin-bottom: 25px; }
+      .link-button { width: 100%; text-align: center; }
+      .back-button { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="estrella-flotante" style="left: 8%; animation-duration: 9s; animation-delay: 1s;"></div>
+  <div class="estrella-flotante" style="left: 22%; animation-duration: 14s; animation-delay: 0s; width: 16px; height: 16px;"></div>
+  <div class="estrella-flotante" style="left: 40%; animation-duration: 11s; animation-delay: 4s; width: 28px; height: 28px;"></div>
+  <div class="estrella-flotante" style="left: 73%; animation-duration: 15s; animation-delay: 2s; width: 14px; height: 14px;"></div>
+  <div class="estrella-flotante" style="left: 88%; animation-duration: 10s; animation-delay: 3s;"></div>
+
+  <main class="container">
+    <h1>Herramientas de Canva</h1>
+
+    <div class="tool-card">
+      <div class="grade-badge">1° de Primaria</div>
+      <h2 class="tool-title">Genially</h2>
+      <p class="description">El calculo mental mediante juegos</p>
+      <div class="button-group">
+        <a href="https://genially.com/es/" class="link-button" target="_blank">Genially</a>
+        <a href="https://view.genially.com/6a430884aa5164d0b569a33b" class="link-button" target="_blank">Ir a la herramienta</a>
+      </div>
+    </div>
+
+    <div class="tool-card">
+      <div class="grade-badge">2° de Primaria</div>
+      <h2 class="tool-title">Wayground</h2>
+      <p class="description">Ejercicios de medición de tiempo</p>
+      <div class="button-group">
+        <a href="https://wayground.com/explore/admin" class="link-button" target="_blank">Wayground</a>
+        <a href="https://wayground.com/join?gc=50835625" class="link-button" target="_blank">Ir a la herramienta</a>
+      </div>
+    </div>
+
+    <div class="tool-card">
+      <div class="grade-badge">3° de Primaria</div>
+      <h2 class="tool-title">Genially</h2>
+      <p class="description">El aprendizaje de las tablas de multiplicar suele ser un reto por su caracter repetitivo. Genially transforma esta experiencia al convertir la memorizacion en un proceso ludico y activo.<br><br> Mediante el uso de recursos gamificados como escape rooms, desafios interactivos o juegos de memoria, los alumnos dejan de ser espectadores pasivos para convertirse en protagonistas de su propio aprendizaje. La interactividad de la herramienta permite reforzar el calculo mental de forma visual y dinamica, aumentando la motivacion y logrando que la practica matematica se perceiba como un juego emocionante en lugar de una tarea monotona.</p>
+      <div class="button-group">
+        <a href="https://genially.com/es/" class="link-button" target="_blank">Genially</a>
+        <a href="https://view.genially.com/6a2252d5748b78537e3f008f" class="link-button" target="_blank">Ir a la herramienta (Daniel)</a>
+      </div>
+    </div>
+
+    <div class="tool-card">
+      <div class="grade-badge">4º de Primaria</div>
+      <h2 class="tool-title">Educaplay</h2>
+      <p class="description">La aplicacion Educaplay favorece el aprendizaje de las niñas y los niños al permitir que las actividades sean mas dinamicas, visuales e interactivas, facilitando la comprension del tema del trazo de angulos.</p>
+      <div class="button-group">
+        <a href="https://es.educaplay.com/" class="link-button" target="_blank">Educaplay</a>
+        <a href="https://es.educaplay.com/usuario/14777086-yahel_javier/" class="link-button" target="_blank">Ir a la herramienta (Yahel)</a>
+        <a href="https://es.educaplay.com/recursos-educativos/29372390-divisiones_divertidas_reparto_y_retos.html" class="link-button" target="_blank">Ir a la herramienta (Ruben)</a>
+      </div>
+    </div>
+
+    <div class="tool-card">
+      <div class="grade-badge">5° de Primaria</div>
+      <h2 class="tool-title">Genially</h2>
+      <p class="description">Genially es la plataforma definitiva para convertir materiales educativos en experiencias interactivas, visuales y memorables. Permite a los docentes crear presentaciones, infografias y gamificaciones que fomentan el aprendizaje autonomo.</p>
+      <div class="button-group">
+        <a href="https://genially.com/es/" class="link-button" target="_blank">Genially</a>
+        <a href="https://view.genially.com/6a1f2c15d04bcc4c871e64d2" class="link-button" target="_blank">Ir a la herramienta (Hebert)</a>
+      </div>
+    </div>
+
+    <div class="tool-card">
+      <div class="grade-badge">6° de Primaria</div>
+      <h2 class="tool-title">Educaplay</h2>
+      <p class="description">Juego matemático enfocado en resolver problemas del entorno real mediante el razonamiento lógico, el pensamiento crítico y la comprensión de su comunidad </p>
+      <div class="button-group">
+        <a href="https://es.educaplay.com/" class="link-button" target="_blank">Educaplay</a>
+        <a href="https://es.educaplay.com/recursos-educativos/29779899-si_o_no_matematicas_en_la_vida_diaria.html" class="link-button" target="_blank">Ir a la herramienta</a>
+      </div>
+    </div>
+
+    <a href="index.html" class="back-button">Volver al inicio</a>
+  </main>
+
+</body>
+</html>
